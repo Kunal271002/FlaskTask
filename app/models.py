@@ -1,10 +1,12 @@
 from app import db
 
 class Register(db.Model):
-    UserId = db.Column(db.Integer, primary_key = True,autoincrement = True)
-    Name = db.Column(db.String(100),nullable = False)
-    Email = db.Column(db.String(100),nullable = False)
-    Password = db.Column(db.String(100),nullable = False)
+    __tablename__ = 'register'
+    user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(100), nullable=False)
+    password = db.Column(db.String(100), nullable=False)
+
 
 class UserTask(db.Model):
     TaskId = db.Column(db.Integer, primary_key = True,autoincrement = True)
