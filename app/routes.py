@@ -15,9 +15,9 @@ def Registeration():
 def Login():
     return render_template("Login.html")
 
-@api_bp.route("/ToDoList")
-def ToDoCreate():
-    return "Create TO Do"
+@api_bp.route("/ToDoList/<int:ID>")
+def ToDoCreate(ID):
+    return render_template("CreateToDoList.html",ID=ID)
 
 
 @api_bp.route('/reg', methods=["POST", "GET"])
@@ -49,9 +49,19 @@ def login_user():
                 break
         if Registered == True:
             print(Registered)
-            return redirect(url_for("api.ToDoCreate"))
+            return redirect(url_for("api.ToDoCreate",ID=1))
         else:   
             return "Please Register"
+@api_bp.route('/CreateToDoList/<int:ID>', methods=["POST", "GET"])
+def CreateToDoList(ID):
+    if request.method == "POST":
+        Title = request.form["title"]
+        Discription = request.form["discription"]
+        Date = request.form["date"]
+        Priority = request.form["Priority"]
+        Status = False
+        print(Title,Discription,Date,Priority,Status,ID)
+        return "Hello"
 
 
         
