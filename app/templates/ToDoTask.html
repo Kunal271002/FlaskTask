@@ -1,61 +1,71 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<style>
-table {
-  font-family: arial, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
+  <meta charset="UTF-8">
+  <title>To-Do List</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <style>
+    body {
+      padding: 20px;
+    }
 
-td, th {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-}
+    .table th,
+    .table td {
+      vertical-align: middle;
+    }
 
-tr:nth-child(even) {
-  background-color: #dddddd;
-}
-</style>
+    .btn a {
+      color: white;
+      text-decoration: none;
+    }
+
+    .btn a:hover {
+      text-decoration: none;
+    }
+  </style>
 </head>
 <body>
 
-<h2>HTML Table</h2>
-<button type="button" class="btn btn-primary" style="color: #fff;
-    background-color: #337ab7;
-    border-color: #2e6da4;">
-    <a href="http://127.0.0.1:5000/CreateToDoList/{{ID}}" class="btn btn-primary" style="color: #fff;
-    background-color: #337ab7;
-    border-color: #2e6da4;">
-    Add Task
-</a>
+  <h2>To-Do List</h2>
 
-</button>
+  <!-- Add Task Button -->
+  <a href="http://127.0.0.1:5000/CreateToDoList//{{ ID }}" class="btn btn-primary">Add Task</a>
+  <br><br>
 
-<br>
-<table>
-<br>
-
-  <tr>
-    <th>Title</th>
-    <th>Description</th>
-    <th>Due Date</th>
-    <th>Priority</th>
-    <th>Status</th>
-  </tr>
-  <tr>
-    <td>Alfreds Futterkiste</td>
-    <td>Maria Anders</td>
-    <td>Germany</td>
-    <td>Germany</td>
-
-    
-    <td>Germany</td>
-  </tr>
-
-</table>
+  <!-- Task Table -->
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Due Date</th>
+        <th>Priority</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in value %}
+      <tr>
+        <td>{{ i['Title'] }}</td>
+        <td>{{ i['Description'] }}</td>
+        <td>{{ i['Due_Date'] }}</td>
+        <td>{{ i['Priority'] }}</td>
+        <td>
+          {% if i['Status'] == 1 %}
+            Completed
+          {% else %}
+            Pending
+          {% endif %}
+        </td>
+        <td>
+          <a href="http://127.0.0.1:5000/UpdateToDoList/{{ i['TaskId'] }}" class="btn btn-info btn-sm">Update</a>
+          <a href="http://127.0.0.1:5000/DeleteToDoList/{{ i['TaskId'] }}" class="btn btn-danger btn-sm">Delete</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 
 </body>
 </html>
-

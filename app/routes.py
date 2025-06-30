@@ -11,18 +11,25 @@ def welcome():
 @api_bp.route('/register')
 def Registeration():
     return render_template("register.html")
+
 @api_bp.route('/login')
 def Login():
     return render_template("Login.html")
 
+@api_bp.route('/CreateToDoList/<int:ID>', methods=["POST", "GET"])
+def AddTask(ID):
+    return render_template("CreateToDoList.html",ID=ID)
+
 @api_bp.route("/ToDoList/<int:ID>")
 def ToDoCreate(ID):
-    return render_template("ToDoTask.html",ID=ID)
-
+    data = UserTask.query.all()
+    All = [item.to_dict() for item in data ]
+    Value = list(filter(lambda x: (x["User_id"] == ID), All))
+    print(Value)
+    return render_template("ToDoTask.html",ID=ID,value=Value)
 
 @api_bp.route('/reg', methods=["POST", "GET"])
 def register_user():
-    
     if request.method == "POST":
         name = request.form['name']
         Email = request.form["email"]
@@ -35,6 +42,7 @@ def register_user():
             return jsonify({"message": "Data Added Successfully"})
         else:
             return jsonify({"message": "Password and Re-Password is Different"})
+        
 @api_bp.route('/log', methods=["POST", "GET"])
 def login_user():
     if request.method == "POST":
@@ -53,9 +61,7 @@ def login_user():
             return redirect(url_for("api.ToDoCreate",ID=Id))
         else:   
             return "Your Password is wrong or You are not Registered"
-@api_bp.route('/CreateToDoList/<int:ID>', methods=["POST", "GET"])
-def AddTask(ID):
-    return render_template("CreateToDoList.html",ID=ID)
+
 @api_bp.route('/AddTask/<int:ID>', methods=["POST", "GET"])
 def CreateToDoList(ID):
     if request.method == "POST":

@@ -24,3 +24,15 @@ class UserTask(db.Model):
     Description = db.Column(db.String(100),nullable = False)
     Due_Date = db.Column(db.String(100),nullable = False)
     Priority = db.Column(db.String(100),nullable = False)
+
+    
+    def to_dict(self):
+        return {
+            "TaskId": self.TaskId,
+            "User_id": self.UserId,
+            "Status": self.Status,
+            "Title": self.Title,
+            "Description":self.Description ,      
+            "Due_Date":self.Due_Date,
+            "Priority":self.Priority       
+        }
