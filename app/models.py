@@ -11,7 +11,8 @@ class Register(db.Model):
         return {
             "User_id": self.UserId,
             "Name": self.Name,
-            "Email": self.Email
+            "Email": self.Email,
+            "Password":self.Password
         }
 
 

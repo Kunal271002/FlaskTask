@@ -1,5 +1,5 @@
 from app import create_app,db
-from app.models import Register
+from app.models import Register,UserTask
 
 from flask import jsonify, redirect, render_template,Blueprint,request, url_for
 api_bp = Blueprint('api',__name__)
@@ -17,7 +17,7 @@ def Login():
 
 @api_bp.route("/ToDoList/<int:ID>")
 def ToDoCreate(ID):
-    return render_template("CreateToDoList.html",ID=ID)
+    return render_template("ToDoTask.html",ID=ID)
 
 
 @api_bp.route('/reg', methods=["POST", "GET"])
@@ -41,18 +41,22 @@ def login_user():
         Email = request.form["email"]
         Password = request.form["password"]
         data = Register.query.all()
-        AllEmails = ([item.to_dict()["Email"] for item in data ])
-        Registered = False 
-        for i in AllEmails:
-            if i == Email:
-                Registered = True
-                break
+        All = [item.to_dict() for item in data ]
+        Value = list(filter(lambda x: (x["Email"] == Email and x["Password"] == Password), All))
+        try:
+            Id = Value[0]["User_id"]
+        except:
+            return "Your Password is wrong or You are not Registered"
+        Registered =  bool(Value)
         if Registered == True:
             print(Registered)
-            return redirect(url_for("api.ToDoCreate",ID=1))
+            return redirect(url_for("api.ToDoCreate",ID=Id))
         else:   
-            return "Please Register"
+            return "Your Password is wrong or You are not Registered"
 @api_bp.route('/CreateToDoList/<int:ID>', methods=["POST", "GET"])
+def AddTask(ID):
+    return render_template("CreateToDoList.html",ID=ID)
+@api_bp.route('/AddTask/<int:ID>', methods=["POST", "GET"])
 def CreateToDoList(ID):
     if request.method == "POST":
         Title = request.form["title"]
@@ -60,8 +64,13 @@ def CreateToDoList(ID):
         Date = request.form["date"]
         Priority = request.form["Priority"]
         Status = False
-        print(Title,Discription,Date,Priority,Status,ID)
-        return "Hello"
-
+        try:
+            NewUser = UserTask(UserId=ID, Status=Status, Title=Title,Description=Discription,Due_Date=Date,Priority=Priority)
+        except:
+            return jsonify({"message": "Data Not Added Successfully"})
+        else:
+            db.session.add(NewUser)
+            db.session.commit()
+            return jsonify({"message": "Data Added Successfully"})
 
         
