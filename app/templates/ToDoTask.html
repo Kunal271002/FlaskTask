@@ -61,6 +61,7 @@
         <td>
           <a href="http://127.0.0.1:5000/UpdateToDoList/{{ i['TaskId'] }}" class="btn btn-info btn-sm">Update</a>
           <a href="http://127.0.0.1:5000/DeleteToDoList/{{ i['TaskId'] }}" class="btn btn-danger btn-sm">Delete</a>
+          <a href="http://127.0.0.1:5000/CompletedToDoList/{{ i['TaskId'] }}" class="btn btn-success btn-sm">Completed</a>
         </td>
       </tr>
       {% endfor %}

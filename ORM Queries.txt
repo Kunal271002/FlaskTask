@@ -1,0 +1,13 @@
+all(): Returns all results from the query as a list of model instances.
+first(): Returns the first result of the query, or None if no results are found.
+get(id): Retrieves a record by its primary key (ID).
+filter_by(: kwargs)`:** Filters records based on keyword arguments (e.g., User.query.filter_by(name='Alice')).
+filter(*args): Filters records using SQLAlchemy expressions (e.g., User.query.filter(User.age > 30)).
+order_by(*args): Orders the results by specified columns (e.g., User.query.order_by(User.name.asc())).
+limit(n): Limits the number of results returned.
+offset(n): Skips a certain number of results.
+count(): Returns the total number of records matching the query.
+join(): Performs a database join between tables.
+get_or_404(id): Retrieves a record by ID, raising a 404 Not Found error if the record does not exist.
+first_or_404(): Returns the first result of the query, raising a 404 Not Found error if no results are found.
+one_or_404(): Returns exactly one result, raising a 404 Not Found error if zero or multiple results are found.

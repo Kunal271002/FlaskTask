@@ -1,0 +1,30 @@
+<html>
+<head>
+  <title>Task Management</title>
+</head>
+<body>
+  <form method="post" action="http://127.0.0.1:5000/Update/{{ ID }}">
+    <h2>Update List</h2>
+    <div>
+      <label>Title Of Task</label>
+      <input type="text" name='title'/><br><br>
+      <label>Discription of Task</label>
+      <input type="text" name="discription"/><br><br>
+      <label>Due Date of Task</label>
+      <input type="date" name="date"/><br><br>
+      <label>Priority</label>
+      <label>High</label>
+      <input type="radio" name="Priority" value="High"/><br><br>
+      <label>Medium</label>
+      <input type="radio" name="Priority" value="Medium"/><br><br>
+      <label>Low</label>
+      <input type="radio" name="Priority" value="Low"/><br><br>
+      <label>Completed</label>
+      <input type="checkbox" name="Completed"   /><br><br>
+    </div>
+    <div>
+      <button type="submit">Submit</button>
+    </div>
+  </form>
+</body>
+</html>

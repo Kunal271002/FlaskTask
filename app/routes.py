@@ -1,4 +1,5 @@
 from app import create_app,db
+import json
 from app.models import Register,UserTask
 
 from flask import jsonify, redirect, render_template,Blueprint,request, url_for
@@ -16,7 +17,11 @@ def Registeration():
 def Login():
     return render_template("Login.html")
 
-@api_bp.route('/CreateToDoList/<int:ID>', methods=["POST", "GET"])
+@api_bp.route('/UpdateToDoList/<int:ID>', methods=["POST", "GET"])
+def UpdateToDoList(ID):
+    return render_template("Update_Page.html",ID=ID)
+
+@api_bp.route('/UpdateToDoList/<int:ID>', methods=["POST", "GET"])
 def AddTask(ID):
     return render_template("CreateToDoList.html",ID=ID)
 
@@ -25,7 +30,6 @@ def ToDoCreate(ID):
     data = UserTask.query.all()
     All = [item.to_dict() for item in data ]
     Value = list(filter(lambda x: (x["User_id"] == ID), All))
-    print(Value)
     return render_template("ToDoTask.html",ID=ID,value=Value)
 
 @api_bp.route('/reg', methods=["POST", "GET"])
@@ -57,7 +61,6 @@ def login_user():
             return "Your Password is wrong or You are not Registered"
         Registered =  bool(Value)
         if Registered == True:
-            print(Registered)
             return redirect(url_for("api.ToDoCreate",ID=Id))
         else:   
             return "Your Password is wrong or You are not Registered"
@@ -78,5 +81,45 @@ def CreateToDoList(ID):
             db.session.add(NewUser)
             db.session.commit()
             return jsonify({"message": "Data Added Successfully"})
+        
+
+@api_bp.route('/CompletedToDoList/<int:ID>', methods=["POST", "GET"])
+def CompletedToDoList(ID):
+    Data = UserTask.query.get_or_404(ID)
+    Data.Status = 1
+    db.session.commit()
+    return "Status Has been Udated"
+
+
+@api_bp.route('/Update/<int:ID>', methods=["POST", "GET"])
+def Update(ID):
+    if request.method == "POST":
+        Title = request.form["title"]
+        discription = request.form["discription"]
+        Date = request.form["date"]
+        Priority = request.form["Priority"]
+        try:
+            Status = request.form["Completed"]
+            Status = 1
+        except:
+            Status = 0
+        Data = UserTask.query.get_or_404(ID)
+        Data.Status = Status
+        Data.Title = Title
+        Data.Description = discription
+        Data.Due_Date = Date
+        Data.Priority = Priority
+        db.session.commit()
+        print(Title,discription,Date,Priority,Status)
+    return "Status Has been Udated"
+
+@api_bp.route('/DeleteToDoList/<int:ID>', methods=["POST", "GET"])
+def DeleteToDoList(ID):
+    Data = UserTask.query.get_or_404(ID)
+    db.session.delete(Data)
+    db.session.commit()
+    return "Task Has been Deleted"
+
+    
 
         
